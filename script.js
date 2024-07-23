@@ -1,3 +1,44 @@
+// ************* COMMON FUNCTIONALITY ********************
+function move_container(container) {
+    let initialX = null;
+    let initialY = null;
+    let isDrag = false;
+
+    container.addEventListener('mousedown', (e) => {
+        initialX = e.clientX;
+        initialY = e.clientY;
+        isDrag = true;
+    })
+
+    container.addEventListener('mousemove', (e) => {
+
+        if (!isDrag) {
+            return;
+        }
+        let finalX = e.clientX;
+        let finalY = e.clientY;
+        // console.log("finalX:", finalX)
+
+        let diffX = finalX - initialX;
+        let diffY = finalY - initialY;
+
+        let { top, left } = container.getBoundingClientRect();
+
+        container.style.top = top + diffY + "px";
+        container.style.left = left + diffX + "px";
+
+        initialX = finalX;
+        initialY = finalY;
+    })
+    container.addEventListener('mouseup', () => {
+        isDrag = false;
+    })
+
+    //To ensure, if mouse leaves the container, div ko move nhi kr payega
+    container.addEventListener('mouseleave', () => {
+        isDrag = false;
+    });
+}
 // ************* TIMER *************************************
 const timeEle = document.querySelector('#time');
 
@@ -13,14 +54,13 @@ function updateTime() {
 setInterval(updateTime, 1000);
 updateTime();
 
-// **********************************************************************
-
 // *********************** CAMERA **********************************
 
 const camera = document.querySelector('.camera');
+let savedImages = []; //This is the array where we will be storing images
 
 function cameraUIHandler() {
-    console.log("inside")
+
     //camera container
     const cameraContainer = document.createElement('div');
     cameraContainer.className = "camera-container";
@@ -60,68 +100,62 @@ function cameraUIHandler() {
     recordingContainer.className = "rec_and_click_container";
 
     //record and capture button;
-    const record = document.createElement('img');
-    const capture = document.createElement('img');
+    const record = document.createElement('button');
+    const recordIcon = document.createElement('img');
     record.className = "record";
+    recordIcon.className = "recordIcon";
+    recordIcon.src = "./icons/record.png"
+    recordIcon.alt = "record-icon"
+
+    const capture = document.createElement('button');
+    const captureIcon = document.createElement('img');
     capture.className = "capture";
-    record.src = "./icons/record.png"
-    record.alt = "record-icon"
-    capture.src = "./icons/capture.png"
-    capture.alt = "capture-icon";
+    captureIcon.className = "captureIcon";
+    captureIcon.src = "./icons/capture.png"
+    captureIcon.alt = "capture-icon";
+
     recordingContainer.appendChild(record);
     recordingContainer.appendChild(capture);
-
-    //Appned rest of child
+    capture.appendChild(captureIcon);
+    record.appendChild(recordIcon);
+    //Append rest of child
     // cameraContainer.appendChild(filterContainer);
     cameraContainer.appendChild(video);
     cameraContainer.appendChild(recordingContainer);
 
-    document.querySelector('.body').appendChild(cameraContainer);
+    document.querySelector('body').appendChild(cameraContainer);
 
     // Make the camera container draggable and resizable
-    cameraDrag(cameraContainer);
+    move_container(cameraContainer);
     startCamera();
-}
 
-function cameraDrag(container) {
-    let initialX = null;
-    let initialY = null;
-    let isDrag = false;
+    //When capture button is click, we have to capture it and store,
+    //Yaha mea dalne sea, null value wont receive
 
-    container.addEventListener('mousedown', (e) => {
-        initialX = e.clientX;
-        initialY = e.clientY;
-        isDrag = true;
-    })
+    const captureButton = document.querySelector('.capture');
 
-    container.addEventListener('mousemove', (e) => {
-
-        if (!isDrag) {
-            return;
-        }
-        let finalX = e.clientX;
-        let finalY = e.clientY;
-        console.log("finalX:", finalX)
-
-        let diffX = finalX - initialX;
-        let diffY = finalY - initialY;
-
-        let { top, left } = container.getBoundingClientRect();
-
-        container.style.top = top + diffY + "px";
-        container.style.left = left + diffX + "px";
-
-        initialX = finalX;
-        initialY = finalY;
-    })
-    container.addEventListener('mouseup', () => {
-        isDrag = false;
-    })
-
-    //To ensure, if mouse leaves the container, div ko move nhi kr payega
-    container.addEventListener('mouseleave', () => {
-        isDrag = false;
+    // Capture image from the video stream
+    captureButton.addEventListener('click', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageUrl = canvas.toDataURL('image/png');
+    
+        // Save image to gallery and localStorage
+        const img = new Image();
+        img.src = imageUrl;
+        img.classList.add('gallery-img');  // Add a class for styling
+        const gallery = document.querySelector('.gallery-container');
+        gallery.appendChild(img);
+    
+        let savedImages = JSON.parse(localStorage.getItem('gallery')) || [];
+        savedImages.push(imageUrl);
+        localStorage.setItem('gallery', JSON.stringify(savedImages));
     });
+    
+
 }
 
 async function startCamera() {
@@ -136,4 +170,15 @@ async function startCamera() {
 }
 
 camera.addEventListener('click', cameraUIHandler);
+
+
+// *********************** GALLERY **************************
+const galleryUI = document.querySelector('.gallery-container');
+const galleryBtn = document.querySelector('.gallery');
+
+galleryBtn.addEventListener('click', move_container(galleryUI));
+
+
+// 77777777777777777777777
+// Capture image from the video stream
 

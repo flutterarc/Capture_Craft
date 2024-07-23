@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+
+<body>
+    <main>
+        <video id="video" autoplay></video>
+        <button id="capture">Capture</button>
+        <div id="gallery"></div>
+    </main>
+    <!-- <script src="script.js"></script> -->
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const video = document.getElementById('video');
+    const captureButton = document.getElementById('capture');
+    const gallery = document.getElementById('gallery');
+
+    // Access the webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+        })
+        .catch(err => {
+            console.error("Error accessing the webcam: ", err);
+        });
+
+    // Load saved images from localStorage
+    function loadGallery() {
+        const savedImages = JSON.parse(localStorage.getItem('gallery')) || [];
+        savedImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+            gallery.appendChild(img);
+        });
+    }
+
+    // Capture image from the video stream
+    captureButton.addEventListener('click', () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageUrl = canvas.toDataURL('image/png');
+
+        // Save image to gallery and localStorage
+        const img = new Image();
+        img.src = imageUrl;
+        gallery.appendChild(img);
+
+        let savedImages = JSON.parse(localStorage.getItem('gallery')) || [];
+        savedImages.push(imageUrl);
+        localStorage.setItem('gallery', JSON.stringify(savedImages));
+    });
+
+    // Initialize gallery on page load
+    loadGallery();
+});
+
+</script>
+</html>

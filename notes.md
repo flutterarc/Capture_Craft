@@ -14,3 +14,5 @@
   * pageX -> this measures from the beginning of the page(left most side or top)
   * screenX -> measures from the whole screen, even if you decrease the container size
     * offsetX -> yea joh container ka hisab sea dkta hea.. substracting the space in between.
+
+## 
