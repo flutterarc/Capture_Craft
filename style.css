@@ -42,54 +42,73 @@ button {
 button:hover {
     transform: rotate(360deg);
 }
+
 /* ******************* COMMON*********************** */
 
 
 /* ****************** CAMERA ********************** */
-/* .filter-container{
-    height: 20vh;
-    display: flex;
-    justify-content: center;
-    padding-top: 1rem;
-    gap: 2rem;
-    } */
 .camera-container {
     top: 0;
     left: 0;
     position: absolute;
     height: 70vh;
     width: 70vw;
-    border: 2px solid black;
+    /* border: 2px solid black; */
     background-color: whitesmoke;
     display: flex;
     flex-direction: column;
-    border-radius: 20%;
-    background-color: yellow;
     overflow: hidden;
 }
 
 .video {
-    height: 80%;
+    min-height: 70%;
     width: 100%;
+    background-color: #2e92d5;
 }
 
-.rec_and_click_container {
+.rec_and_cap_container {
     height: 20%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.recordIcon, .captureIcon {
+.recordIcon,
+.captureIcon {
     height: 100%;
 }
-.capture, .record {
-    width: 60px;
-    height: 60px;
+
+.capture,
+.record {
+    height: 60%;
+    width:5%;
     border: none;
     cursor: pointer;
     appearance: none;
     background-color: inherit;
+}
+
+
+/* style of navBar */
+.navBar {
+    min-height: 10%;
+    background-color: slategrey;
+    border: 2px solid black;
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+}
+
+.minimize , .close{
+    height: 60%;
+    width:5%;
+    border-radius:50%;  
+}
+.minimize {
+    background-color: #2ed573;
+}
+.close {
+    background-color: #ff4757;
 }
 
 
