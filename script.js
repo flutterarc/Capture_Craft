@@ -1,44 +1,44 @@
 // ************* COMMON FUNCTIONALITY ********************
-// function move_container(container) {
-//     let initialX = null;
-//     let initialY = null;
-//     let isDrag = false;
+function move_container(container) {
+    let initialX = null;
+    let initialY = null;
+    let isDrag = false;
 
-//     container.addEventListener('mousedown', (e) => {
-//         initialX = e.clientX;
-//         initialY = e.clientY;
-//         isDrag = true;
-//     })
+    container.addEventListener('mousedown', (e) => {
+        initialX = e.clientX;
+        initialY = e.clientY;
+        isDrag = true;
+    })
 
-//     container.addEventListener('mousemove', (e) => {
+    container.addEventListener('mousemove', (e) => {
 
-//         if (!isDrag) {
-//             return;
-//         }
-//         let finalX = e.clientX;
-//         let finalY = e.clientY;
-//         // console.log("finalX:", finalX)
+        if (!isDrag) {
+            return;
+        }
+        let finalX = e.clientX;
+        let finalY = e.clientY;
+        // console.log("finalX:", finalX)
 
-//         let diffX = finalX - initialX;
-//         let diffY = finalY - initialY;
+        let diffX = finalX - initialX;
+        let diffY = finalY - initialY;
 
-//         let { top, left } = container.getBoundingClientRect();
+        let { top, left } = container.getBoundingClientRect();
 
-//         container.style.top = top + diffY + "px";
-//         container.style.left = left + diffX + "px";
+        container.style.top = top + diffY + "px";
+        container.style.left = left + diffX + "px";
 
-//         initialX = finalX;
-//         initialY = finalY;
-//     })
-//     container.addEventListener('mouseup', () => {
-//         isDrag = false;
-//     })
+        initialX = finalX;
+        initialY = finalY;
+    })
+    container.addEventListener('mouseup', () => {
+        isDrag = false;
+    })
 
-//     //To ensure, if mouse leaves the container, div ko move nhi kr payega
-//     container.addEventListener('mouseleave', () => {
-//         isDrag = false;
-//     });
-// }
+    //To ensure, if mouse leaves the container, div ko move nhi kr payega
+    container.addEventListener('mouseleave', () => {
+        isDrag = false;
+    });
+}
 // ************* TIMER *************************************
 const timeEle = document.querySelector('#time');
 
@@ -110,12 +110,16 @@ function cameraUIHandler() {
 
         if (isMinimized == false) {
             videoContainer.style.display = "none";
-            // videoContainer.style.backgroundColor = "inherit";
-            
             rec_and_cap_container.style.display = "none"
+
+            videoContainer.style.backgroundColor = "inherit";
+            cameraContainer.style.backgroundColor = "inherit";
         } else {
             videoContainer.style.display = "block";
             rec_and_cap_container.style.display = "flex";
+
+            videoContainer.style.backgroundColor = "#2e92d5";
+            cameraContainer.style.backgroundColor = "whitesmoke";
         }
         isMinimized = !isMinimized;
     });
@@ -123,6 +127,8 @@ function cameraUIHandler() {
     close.addEventListener("click", function () {
         cameraContainer.remove();
     });
+
+    move_container(cameraContainer);
 }
 async function startCamera() {
     const video = document.querySelector('.video');
