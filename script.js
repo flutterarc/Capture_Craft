@@ -1,3 +1,4 @@
+// ##############################################
 
 // ************* TIMER *************************************
 const timeEle = document.querySelector('#time');
@@ -157,7 +158,7 @@ let isMinimized = false;
 
 // Initially hide the gallery container
 galleryContainer.style.display = 'none';
-galleryBtn.addEventListener('click', toggleGalleryUI);
+galleryBtn.addEventListener('click', GalleryUI);
 
 minimize.addEventListener("click", function () {
     if (isMinimized == false) {
@@ -174,7 +175,7 @@ close.addEventListener("click", function () {
     galleryContainer.style.display = 'none';
 })
 
-function toggleGalleryUI() {
+function GalleryUI() {
     // Toggle the display of the gallery container
     if (galleryContainer.style.display === 'none') {
         galleryContainer.style.display = 'flex';
@@ -221,3 +222,76 @@ function toggleGalleryUI() {
     }
 }
 
+
+
+// ********************** RECYCLE-BIN *************************
+const recycleBinBtn = document.querySelector('.recycle-bin');
+const recycleBinContainer = document.querySelector('.recycle-container');
+const recycleMinimize = document.querySelector('.minimize-recycle');
+const recycleClose = document.querySelector('.close-recycle');
+const recycleImageContainer = document.querySelector('.recycle-images');
+const recycleNavBar = document.querySelector('.recycle-navBar');
+
+// Initially hide the recycle-bin container
+recycleBinContainer.style.display = 'none';
+
+recycleBinBtn.addEventListener('click', galleryUI);
+
+function galleryUI() {
+    if (recycleBinContainer.style.display === 'none') {
+        recycleBinContainer.style.display = 'flex';
+
+        let initialX = null;
+        let initialY = null;
+        let isMove = false;
+
+        recycleNavBar.addEventListener("mousedown", function (e) {
+            initialX = e.clientX;
+            initialY = e.clientY;
+            isMove = true;
+        });
+        recycleNavBar.addEventListener("mousemove", function (e) {
+            if (isMove === true) {
+                let finalX = e.clientX;
+                let finalY = e.clientY;
+
+                let diffX = finalX - initialX;
+                let diffY = finalY - initialY;
+
+                let { top, left } = recycleBinContainer.getBoundingClientRect();
+
+                recycleBinContainer.style.top = top + diffY + "px";
+                recycleBinContainer.style.left = left + diffX + "px";
+
+                initialX = finalX;
+                initialY = finalY;
+            }
+        });
+
+        recycleNavBar.addEventListener("mouseup", function () {
+            isMove = false;
+        });
+        // pointer => moved off container
+        recycleNavBar.addEventListener("mouseleave", function () {
+            isMove = false;
+        });
+    } else {
+        recycleBinContainer.style.display = 'none';
+    }
+}
+
+let isRecycleMinimized = false;
+recycleMinimize.addEventListener("click", function () {
+    if (isRecycleMinimized == false) {
+        recycleImageContainer.style.visibility = "none";
+        recycleImageContainer.style.backgroundColor = "inherit";
+    } else {
+        recycleImageContainer.style.visibility = "flex";
+        recycleImageContainer.style.backgroundColor = "whitesmoke";
+    }
+    isRecycleMinimized = !isRecycleMinimized;
+});
+
+recycleClose.addEventListener("click", function () {
+    recycleBinContainer.style.display = 'none';
+})

@@ -15,4 +15,29 @@
   * screenX -> measures from the whole screen, even if you decrease the container size
     * offsetX -> yea joh container ka hisab sea dkta hea.. substracting the space in between.
 
-## 
+## Container when click come to top wala code
+* 1.Selecting all containers
+* 2.Removing the on-top class from all containers
+* 3.Adding the on-top class to the clicked container
+* 4.Setting the z-index of the clicked container to a high value using CSS
+
+```js
+// Add a class to manage the z-index
+function bringToFront(container) {
+    // Remove the class from all containers
+    const containers = document.querySelectorAll('.camera-container, .gallery-container, .recycle-container');
+    containers.forEach((container) => container.classList.remove('on-top'));
+
+    // Add the class to the clicked container
+    container.classList.add('on-top');
+}
+
+// Add the event listeners
+cameraContainer.addEventListener("click", () => bringToFront(cameraContainer));
+galleryContainer.addEventListener("click", () => bringToFront(galleryContainer));
+recycleBinContainer.addEventListener("click", () => bringToFront(recycleBinContainer));
+
+// Add the CSS for the class
+.on-top {
+    z-index: 1000; // Set a high z-index value
+}
