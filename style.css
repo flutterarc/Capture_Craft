@@ -123,10 +123,40 @@ button:hover {
 } */
 
 .gallery-container {
+    position: absolute;
     height: 70vh;
     width: 70vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.gallery-navBar {
+    min-height: 10%;
+    background-color: slategrey;
     border: 2px solid black;
-    position: absolute;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.minimize-gallery, .close-gallery {
+    height: 60%;
+    width: 5%;
+    border-radius: 50%;
+}
+
+.minimize-gallery {
+    background-color: #2ed573;
+}
+
+.close-gallery {
+    background-color: #ff4757;
+}
+
+.image-container {
+    height: 90%;
+    flex-grow: 1;
     overflow: auto;
     display: flex;
     flex-wrap: wrap;
@@ -134,14 +164,6 @@ button:hover {
     align-items: center;
     gap: 10px;
     padding: 10px;
-}
 
-.gallery-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    width: auto;
-    height: auto;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color:whitesmoke;
 }

@@ -1,44 +1,4 @@
-// ************* COMMON FUNCTIONALITY ********************
-function move_container(container) {
-    let initialX = null;
-    let initialY = null;
-    let isDrag = false;
 
-    container.addEventListener('mousedown', (e) => {
-        initialX = e.clientX;
-        initialY = e.clientY;
-        isDrag = true;
-    })
-
-    container.addEventListener('mousemove', (e) => {
-
-        if (!isDrag) {
-            return;
-        }
-        let finalX = e.clientX;
-        let finalY = e.clientY;
-        // console.log("finalX:", finalX)
-
-        let diffX = finalX - initialX;
-        let diffY = finalY - initialY;
-
-        let { top, left } = container.getBoundingClientRect();
-
-        container.style.top = top + diffY + "px";
-        container.style.left = left + diffX + "px";
-
-        initialX = finalX;
-        initialY = finalY;
-    })
-    container.addEventListener('mouseup', () => {
-        isDrag = false;
-    })
-
-    //To ensure, if mouse leaves the container, div ko move nhi kr payega
-    container.addEventListener('mouseleave', () => {
-        isDrag = false;
-    });
-}
 // ************* TIMER *************************************
 const timeEle = document.querySelector('#time');
 
@@ -55,13 +15,24 @@ updateTime();
 
 // *********************** CAMERA **********************************
 
-const camera = document.querySelector('.camera');
+const cameraBtn = document.querySelector('.camera');
 let savedImages = []; //This is the array where we will be storing images
 
-camera.addEventListener('click', cameraUIHandler);
+cameraBtn.addEventListener('click', cameraUIHandler);
 
+let isCameraOpen = false;
+let cameraContainer = null;
 function cameraUIHandler() {
-    const cameraContainer = document.createElement('div');
+
+    if (isCameraOpen) {
+        cameraContainer.remove();
+        isCameraOpen = false;
+        return;
+    }
+
+    isCameraOpen = true;
+
+    cameraContainer = document.createElement('div');
     const navBar = document.createElement('div');
     const minimize = document.createElement('div');
     const close = document.createElement('div');
@@ -71,7 +42,6 @@ function cameraUIHandler() {
     const captureIcon = document.createElement('img');
     const recordIcon = document.createElement('img');
     const rec_and_cap_container = document.createElement('div');
-    // const camera_bottom_container = document.createElement('div');
 
     cameraContainer.setAttribute('class', 'camera-container');
     navBar.setAttribute('class', 'navBar');
@@ -83,7 +53,6 @@ function cameraUIHandler() {
     captureBtn.setAttribute('class', 'capture');
     captureIcon.setAttribute('class', 'captureIcon');
     recordIcon.setAttribute('class', 'recordIcon');
-    // camera_bottom_container.setAttribute('class','camera_bottom_container');
 
     recordIcon.src = "./icons/record.png"
     recordIcon.alt = "record-icon"
@@ -99,9 +68,6 @@ function cameraUIHandler() {
     cameraContainer.appendChild(navBar);
     cameraContainer.appendChild(videoContainer);
     cameraContainer.appendChild(rec_and_cap_container);
-    // camera_bottom_container.appendChild(videoContainer);
-    // camera_bottom_container.appendChild(rec_and_cap_container);
-    // cameraContainer.appendChild(camera_bottom_container)
     document.body.appendChild(cameraContainer);
 
     //NAV BAR FUNCTIONALITIES
@@ -126,9 +92,45 @@ function cameraUIHandler() {
 
     close.addEventListener("click", function () {
         cameraContainer.remove();
+        isCameraOpen = false;
     });
 
-    move_container(cameraContainer);
+    //Move container
+    let initialX = null;
+    let initialY = null;
+    let isMove = false;
+
+    navBar.addEventListener("mousedown", function (e) {
+        initialX = e.clientX;
+        initialY = e.clientY;
+        isMove = true;
+    });
+
+    navBar.addEventListener("mousemove", function (e) {
+        if (isMove === true) {
+            let finalX = e.clientX;
+            let finalY = e.clientY;
+
+            let diffX = finalX - initialX;
+            let diffY = finalY - initialY;
+
+            let { top, left } = cameraContainer.getBoundingClientRect();
+
+            cameraContainer.style.top = top + diffY + "px";
+            cameraContainer.style.left = left + diffX + "px";
+
+            initialX = finalX;
+            initialY = finalY;
+        }
+    });
+
+    navBar.addEventListener("mouseup", function () {
+        isMove = false;
+    });
+    // pointer => moved off container
+    navBar.addEventListener("mouseleave", function () {
+        isMove = false;
+    });
 }
 async function startCamera() {
     const video = document.querySelector('.video');
@@ -144,10 +146,78 @@ async function startCamera() {
 
 
 // *********************** GALLERY **************************
-const galleryUI = document.querySelector('.gallery-container');
+
+const galleryContainer = document.querySelector('.gallery-container');
 const galleryBtn = document.querySelector('.gallery');
+const imageContainer = document.querySelector('.image-container');
+const minimize = document.querySelector('.minimize');
+const close = document.querySelector('.close-gallery');
+const navBar = document.querySelector('.gallery-navBar')
+let isMinimized = false;
 
-// galleryBtn.addEventListener('click', move_container(galleryUI));
+// Initially hide the gallery container
+galleryContainer.style.display = 'none';
+galleryBtn.addEventListener('click', toggleGalleryUI);
 
+minimize.addEventListener("click", function () {
+    if (isMinimized == false) {
+        imageContainer.style.visibility = "none";
+        imageContainer.style.backgroundColor = "inherit";
+    } else {
+        imageContainer.style.visibility = "flex";
+        imageContainer.style.backgroundColor = "whitesmoke";
+    }
+    isMinimized = !isMinimized;
+});
 
+close.addEventListener("click", function () {
+    galleryContainer.style.display = 'none';
+})
+
+function toggleGalleryUI() {
+    // Toggle the display of the gallery container
+    if (galleryContainer.style.display === 'none') {
+        galleryContainer.style.display = 'flex';
+
+        //Move container
+        let initialX = null;
+        let initialY = null;
+        let isMove = false;
+
+        navBar.addEventListener("mousedown", function (e) {
+            initialX = e.clientX;
+            initialY = e.clientY;
+            isMove = true;
+        });
+
+        navBar.addEventListener("mousemove", function (e) {
+            if (isMove === true) {
+                let finalX = e.clientX;
+                let finalY = e.clientY;
+
+                let diffX = finalX - initialX;
+                let diffY = finalY - initialY;
+
+                let { top, left } = galleryContainer.getBoundingClientRect();
+
+                galleryContainer.style.top = top + diffY + "px";
+                galleryContainer.style.left = left + diffX + "px";
+
+                initialX = finalX;
+                initialY = finalY;
+            }
+        });
+
+        navBar.addEventListener("mouseup", function () {
+            isMove = false;
+        });
+        // pointer => moved off container
+        navBar.addEventListener("mouseleave", function () {
+            isMove = false;
+        });
+
+    } else {
+        galleryContainer.style.display = 'none';
+    }
+}
 
