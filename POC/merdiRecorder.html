@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Video recording</h1>
+    <video id="video" height="480" width="640" autoplay></video>
+    <button id="start">START RECORDING</button>
+    <button id="stop">STOP RECORDING</button>
+    <video id="recorded-video" height="480" width="640" controls></video>
+    <div id="recorded-videos"></div>
+</body>
+<script>
+    const start = document.querySelector('#start');
+    const stop = document.querySelector('#stop');
+    const video = document.querySelector('#video');
+    const recordedVideo = document.querySelector('#recorded-video');
+    const recordedVideosContainer = document.querySelector('#recorded-videos');
+
+    start.addEventListener('click', startRecording);
+    stop.addEventListener('click', stopRecording);
+
+    let mediaRecorder;
+    let stream;
+    let recordedBlobs;
+    let videoIndex = 0;
+
+    start.addEventListener('click', startRecording);
+    stop.addEventListener('click', stopRecording);
+
+    async function startRecording() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
+
+            // Check if the stream has a video track
+            if (!stream.getVideoTracks().length) {
+                console.error('No video track found');
+                alert('Please plug in your camera');
+                return;
+            }
+
+            video.srcObject = stream;
+            mediaRecorder = new MediaRecorder(stream);
+
+            mediaRecorder.start(1000); //START recording in 1sec chunks
+            recordedBlobs = [];
+
+            // The mediaRecorder.ondataavailable event is triggered when the MediaRecorder has recorded a chunk of data, but this event is not triggered immediately after calling mediaRecorder.start()
+            mediaRecorder.ondataavailable = function (e) {
+                if (e.data.size > 0) {
+                    recordedBlobs.push(e.data);
+                    console.log('Data available:', e.data);
+                }
+            }
+
+            //FOR UNDERSTANDING CODE FLOW
+            mediaRecorder.addEventListener('start', () => {
+                console.log("Recording started");
+            })
+            mediaRecorder.addEventListener('stop', () => {
+                console.log("Recording stopped")
+            })
+
+        } catch (error) {
+            console.error('Error starting recording:', error);
+        }
+    }
+    function stopRecording() {
+        mediaRecorder.stop();
+        stream.getTracks().forEach(track => track.stop());
+        const superBuffer = new Blob(recordedBlobs, { type: 'video/webm' });
+
+        const recordedVideo = document.createElement('video');
+        recordedVideo.width = 640;
+        recordedVideo.height = 480;
+        recordedVideo.src = URL.createObjectURL(superBuffer);
+        recordedVideo.controls = true; // Add controls to the video
+        recordedVideo.play();
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => {
+            recordedVideosContainer.removeChild(recordedVideo);
+            recordedVideosContainer.removeChild(deleteButton);
+        };
+
+        recordedVideosContainer.appendChild(recordedVideo);
+        recordedVideosContainer.appendChild(deleteButton);
+        videoIndex++;
+    }
+</script>
+
+</html>

@@ -17,15 +17,13 @@ function cameraUIHandler() {
 
 
     //video element
-    const video = document.createElement('video');
-    video.className = "video";
+  
     video.autoplay = "true";
 
    
 
 
     // Make the camera container draggable and resizable
-    move_container(cameraContainer);
     startCamera();
 
     //When capture button is click, we have to capture it and store,

@@ -68,7 +68,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap:4rem;
+    gap: 4rem;
 }
 
 .recordIcon,
@@ -76,17 +76,16 @@ button:hover {
     height: 100%;
 }
 
-.capture,
-.record {
+#capture,
+#record {
     height: 60%;
-    width:5%;
+    width: 5%;
     border: none;
     cursor: pointer;
     appearance: none;
     background-color: inherit;
     /* transform-origin: center;  */
 }
-
 
 /* style of navBar */
 .navBar {
@@ -99,19 +98,63 @@ button:hover {
     gap: 1rem;
 }
 
-.minimize , .close{
+.minimize,
+.close {
     height: 60%;
-    width:5%;
-    border-radius:50%;  
+    width: 5%;
+    border-radius: 50%;
 }
+
 .minimize {
     background-color: #2ed573;
 }
+
 .close {
     background-color: #ff4757;
 }
 
+.recorded-video-container {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    
+}
 
+.recorded-video {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.captured-image-container {
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.captured-image {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+
+.delete-button {
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Changed from 50% to 0 */
+    background-color: #ff477e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color:darkred;
+}
 /* *************** GALLERY ******************* */
 .gallery-container {
     position: absolute;
@@ -156,17 +199,18 @@ button:hover {
     gap: 10px;
     padding: 10px;
 
-    background-color:whitesmoke;
+    background-color: whitesmoke;
 }
 
 /* **************** RECYCLE BIN ******************* */
-.recycle-container{
+.recycle-container {
     position: absolute;
     height: 70vh;
     width: 70vw;
     display: flex;
     flex-direction: column;
 }
+
 .recycle-navBar {
     /* min-height: 10%;  */
     background-color: slategrey;
@@ -176,17 +220,22 @@ button:hover {
     align-items: center;
     gap: 1rem;
 }
-.minimize-recycle,.close-recycle{
+
+.minimize-recycle,
+.close-recycle {
     height: 60%;
     width: 5%;
     border-radius: 50%;
 }
-.minimize-recycle{
+
+.minimize-recycle {
     background-color: #2ed573;
 }
+
 .close-recycle {
     background-color: #ff4757;
 }
+
 .recycle-images {
     height: 90%;
     flex-grow: 1;
@@ -198,9 +247,10 @@ button:hover {
     gap: 10px;
     padding: 10px;
 
-    background-color:whitesmoke;
+    background-color: whitesmoke;
 }
-.recycle-text{
+
+.recycle-text {
     text-align: center;
     width: 70%;
 }
