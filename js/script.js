@@ -199,7 +199,7 @@ async function startRecording(stream) {
 }
 // Stop recording
 function stopRecording(stream) {
-    const imageContainer = document.querySelector('.image-container');
+    const imgAndVidContainer = document.querySelector('.img-vid-container');
 
     if (mediaRecorder) { // Check if mediaRecorder is not null
         mediaRecorder.stop();
@@ -213,9 +213,9 @@ function stopRecording(stream) {
         const recordedVideo = document.createElement('video');
         const deleteButton = document.createElement('button');
 
-        recordedVideoContainer.setAttribute('class','recorded-video-container');
-        recordedVideo.setAttribute('class','recorded-video');
-        deleteButton.setAttribute('class','delete-button');
+        recordedVideoContainer.setAttribute('class', 'recorded-video-container');
+        recordedVideo.setAttribute('class', 'recorded-video');
+        deleteButton.setAttribute('class', 'delete-button');
         deleteButton.textContent = 'Delete';
 
         recordedVideo.width = 200;
@@ -228,10 +228,10 @@ function stopRecording(stream) {
             console.log("delete clicked")
             recordedVideoContainer.remove();
         });
-        
+
         recordedVideoContainer.appendChild(recordedVideo);
         recordedVideoContainer.appendChild(deleteButton);
-        imageContainer.appendChild(recordedVideoContainer);
+        imgAndVidContainer.appendChild(recordedVideoContainer);
 
         mediaRecorder = null;
         // recordedBlobs = null;
@@ -240,11 +240,19 @@ function stopRecording(stream) {
     }
 }
 
+
+// WHEN IMAGE CAPTURED STORE IN AN ARRAY WALA CODE
+//Phase 1- initialization
+const imagesArray = [];
+const recyclebinArray = [];
+
+//PHASE 2: Image Capture
+//In this phase when we click the capture btn, image gets shown in gallery and we store the image in array, but when we refresh the page, the gallery becomes empty , so we have to re-render the image from stored images gallery. For that we need phase-4;
 function captureImage() {
     const video = document.querySelector('.video');
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const imageContainer = document.querySelector('.image-container');
+    const imgAndVidContainer = document.querySelector('.img-vid-container');
 
     canvas.width = 200;
     canvas.height = 200;
@@ -256,28 +264,150 @@ function captureImage() {
     const capturedImage = document.createElement('img');
     const deleteBtn = document.createElement('button');
 
-    capturedImageContainer.setAttribute('class','captured-image-container');
-    capturedImage.setAttribute('class','captured-image');
-    deleteBtn.setAttribute('class','delete-button');
+    capturedImageContainer.setAttribute('class', 'captured-image-container');
+    capturedImage.setAttribute('class', 'captured-image');
+    deleteBtn.setAttribute('class', 'delete-button');
 
     deleteBtn.textContent = "Delete";
     capturedImage.src = imageData;
 
-    deleteBtn.addEventListener('click',()=>{
-        capturedImageContainer.remove();
-    })
-
     // Append
     capturedImageContainer.appendChild(capturedImage);
     capturedImageContainer.appendChild(deleteBtn);
-    imageContainer.appendChild(capturedImageContainer);
+    imgAndVidContainer.appendChild(capturedImageContainer);
+
+    //Add image to imagesArray
+    imagesArray.push({
+        src: imageData,
+        deleted: false
+    })
+
+    deleteBtn.addEventListener('click', () => {
+        moveImageToRecycleBin(imageData, capturedImageContainer);
+    });
+
+    //store imagesArray in localStorage
+    storeImages();
+}
+function moveImageToRecycleBin(imageData, capturedImageContainer) {
+    const recycledContainer = document.querySelector('.recycled-images-vids');
+    const recycledImageContainer = document.createElement('div');
+    const recycledImage = document.createElement('img');
+    const recycleDeleteBtn = document.createElement('button');
+    const recycleRestoreBtn = document.createElement('button');
+
+    capturedImageContainer.innerHTML = '';
+    recycledImage.setAttribute('class', 'recycled-img')
+    recycleRestoreBtn.setAttribute('class', 'recycleRestoreBtn')
+    recycleDeleteBtn.setAttribute('class', 'recycleDeleteBtn');
+    recycledImageContainer.setAttribute('class', 'recycledImageContainer');
+    recycleDeleteBtn.textContent = 'Delete';
+    recycleRestoreBtn.textContent = 'Restore';
+    recycledImage.src = imageData;
+
+    recycledImageContainer.appendChild(recycledImage);
+    recycledImageContainer.appendChild(recycleDeleteBtn);
+    recycledImageContainer.appendChild(recycleRestoreBtn);
+    recycledContainer.appendChild(recycledImageContainer);
+
+    // Add event listener to recycle delete button
+    recycleDeleteBtn.addEventListener('click', () => {
+        deleteImageFromLocalStorage(imageData);
+        recycledImageContainer.remove();
+    });
+    recycleRestoreBtn.addEventListener('click', () => {
+        restoreImage(imageData, recycledImageContainer);
+    });
+}
+function deleteImageFromLocalStorage(imageData) {
+    const storedImages = JSON.parse(localStorage.getItem('images'));
+    const index = storedImages.findIndex((image) => image.src === imageData);
+    if (index !== -1) {
+        storedImages.splice(index, 1);
+        localStorage.setItem('images', JSON.stringify(storedImages));
+    }
+
+    // Remove image data from imagesArray
+    const indexInImagesArray = imagesArray.findIndex((image) => image.src === imageData);
+    if (indexInImagesArray !== -1) {
+        imagesArray.splice(indexInImagesArray, 1);
+    }
+}
+// Phase 3: Image Restoration
+function restoreImage(imageData, recycledImageContainer) {
+    const imgAndVidContainer = document.querySelector('.img-vid-container');
+    const capturedImageContainer = document.createElement('div');
+    const capturedImage = document.createElement('img');
+    const deleteBtn = document.createElement('button');
+
+    capturedImageContainer.setAttribute('class', 'captured-image-container');
+    capturedImage.setAttribute('class', 'captured-image');
+    deleteBtn.setAttribute('class', 'delete-button');
+
+    deleteBtn.textContent = "Delete";
+    capturedImage.src = imageData;
+
+    capturedImageContainer.appendChild(capturedImage);
+    capturedImageContainer.appendChild(deleteBtn);
+    imgAndVidContainer.appendChild(capturedImageContainer);
+
+    deleteBtn.addEventListener('click', () => {
+        moveImageToRecycleBin(imageData, capturedImageContainer);
+    });
+
+    // Remove image container from recycle bin
+    recycledImageContainer.remove();
+
+    // Update imagesArray to reflect that the image is no longer deleted
+    const index = imagesArray.findIndex((image) => image.src === imageData);
+    if (index !== -1) {
+        imagesArray[index].deleted = false;
+    }
+
+    // Store updated imagesArray in local storage
+    storeImages();
+}
+//PHASE 3: Image Storage
+//store images in local storage taht is being called when captureImage function is called
+function storeImages() {
+    localStorage.setItem('images', JSON.stringify(imagesArray));
+}
+
+//Phase-4: Image Rendering
+//When the page gets reload this function will be called
+function renderImages() {
+    const imgAndVidContainer = document.querySelector('.img-vid-container');
+
+    imagesArray.forEach((image) => {
+        const capturedImageContainer = document.createElement('div');
+        const capturedImage = document.createElement('img');
+        const deleteBtn = document.createElement('button');
+
+        capturedImageContainer.setAttribute('class', 'captured-image-container');
+        capturedImage.setAttribute('class', 'captured-image');
+        deleteBtn.setAttribute('class', 'delete-button');
+
+        deleteBtn.textContent = "Delete";
+        capturedImage.src = image.src;
+
+        capturedImageContainer.appendChild(capturedImage);
+        capturedImageContainer.appendChild(deleteBtn);
+        imgAndVidContainer.appendChild(capturedImageContainer);
+    })
+}
+
+//PHASE-5: Image Deletion
+// Completely delete image function
+function completelyDeleteImage(imageData, capturedImageContainer) {
+    // Remove image container from recycle bin
+    capturedImageContainer.remove();
 }
 
 // *********************** GALLERY **************************
 
 const galleryContainer = document.querySelector('.gallery-container');
 const galleryBtn = document.querySelector('.gallery');
-const imageContainer = document.querySelector('.image-container');
+const imgAndVidContainer = document.querySelector('.img-vid-container');
 const minimize = document.querySelector('.minimize');
 const close = document.querySelector('.close-gallery');
 const galleryNavBar = document.querySelector('.gallery-navBar')
@@ -289,11 +419,11 @@ galleryBtn.addEventListener('click', GalleryUI);
 
 minimize.addEventListener("click", function () {
     if (isMinimized == false) {
-        imageContainer.style.display = "none";
-        imageContainer.style.backgroundColor = "inherit";
+        imgAndVidContainer.style.display = "none";
+        imgAndVidContainer.style.backgroundColor = "inherit";
     } else {
-        imageContainer.style.display = "flex";
-        imageContainer.style.backgroundColor = "whitesmoke";
+        imgAndVidContainer.style.display = "flex";
+        imgAndVidContainer.style.backgroundColor = "whitesmoke";
     }
     isMinimized = !isMinimized;
 });
@@ -321,8 +451,9 @@ const recycleBinBtn = document.querySelector('.recycle-bin');
 const recycleBinContainer = document.querySelector('.recycle-container');
 const recycleMinimize = document.querySelector('.minimize-recycle');
 const recycleClose = document.querySelector('.close-recycle');
-const recycleImageContainer = document.querySelector('.recycle-images');
+const recycledContainer = document.querySelector('.recycled-images-vids');
 const recycleNavBar = document.querySelector('.recycle-navBar');
+const recycleDeleteBtn = document.querySelector('.recycleDeleteBtn');
 
 // Initially hide the recycle-bin container
 recycleBinContainer.style.display = 'none';
@@ -341,14 +472,15 @@ function recycleBinUI() {
 let isRecycleMinimized = false;
 recycleMinimize.addEventListener("click", function () {
     if (isRecycleMinimized == false) {
-        recycleImageContainer.style.visibility = "none";
-        recycleImageContainer.style.backgroundColor = "inherit";
+        recycledContainer.style.visibility = "none";
+        recycledContainer.style.backgroundColor = "inherit";
     } else {
-        recycleImageContainer.style.visibility = "flex";
-        recycleImageContainer.style.backgroundColor = "whitesmoke";
+        recycledContainer.style.visibility = "flex";
+        recycledContainer.style.backgroundColor = "whitesmoke";
     }
     isRecycleMinimized = !isRecycleMinimized;
 });
 recycleClose.addEventListener("click", function () {
     recycleBinContainer.style.display = 'none';
 })
+

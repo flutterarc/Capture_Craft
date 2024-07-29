@@ -1,0 +1,66 @@
+main {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body {
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow: hidden;
+}
+
+.display-time {
+    height: 100px;
+    width: 500px;
+    border: 2px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: wheat;
+    font-size: 5rem;
+}
+
+footer {
+    height: calc(100vh - 90vh);
+    background-color: lightgoldenrodyellow;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    /* border: 2px solid black; */
+}
+
+
+button {
+    transition: transform 0.7s ease-in-out;
+}
+
+button:hover {
+    /* transform: rotate(360deg); */
+}
+
+
+/* ******************* COMMON*********************** */
+.img-vid-container,.recycled-images-vids{
+    height: 90%;
+    flex-grow: 1;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+
+    background-color: whitesmoke;
+}
+
+
+/* ********** WALLPAPER ************ */
+main {
+    background-image: url('../icons/wallpaper1.jpg.jpeg');
+    background-size: cover;
+    background-position: center;
+}

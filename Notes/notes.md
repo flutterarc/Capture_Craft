@@ -49,7 +49,7 @@ recycleBinContainer.addEventListener("click", () => bringToFront(recycleBinConta
 ```
 
 ## RECORDING USER
-    * 1.We will create a new "recorder" object that will capture the video and audio from the camera.
+* 1.We will create a new "recorder" object that will capture the video and audio from the camera.
     * 2.We tell the recorder to save the captured video and audio in small chunks, like a series of snapshots.
     * 3.Each snapshot is stored in a special container called a "Blob".
     * 4.We collect all these Blobs in an array called "recordedBlobs".
@@ -70,3 +70,8 @@ function startRecording(stream) {
     mediaRecorder.start();
 }
 ```
+
+
+## Storage
+* 1.Local storage size limit: As I mentioned earlier, local storage has a maximum size limit of 5MB. If you try to store too many images, you may exceed this limit and the images may not be stored correctly.
+* 2.Security: Local storage is not secure, so you should not store sensitive information (like user data or authentication tokens) in local storage.

@@ -52,3 +52,43 @@ function cameraUIHandler() {
         localStorage.setItem('gallery', JSON.stringify(savedImages));
     });
 }
+
+
+```js
+function captureImage() {
+    const video = document.querySelector('.video');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const imgAndVidContainer = document.querySelector('.img-vid-container');
+
+    canvas.width = 200;
+    canvas.height = 200;
+
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    const imageData = canvas.toDataURL('image/png');
+
+    const capturedImageContainer = document.createElement('div');
+    const capturedImage = document.createElement('img');
+    const deleteBtn = document.createElement('button');
+
+    capturedImageContainer.setAttribute('class', 'captured-image-container');
+    capturedImage.setAttribute('class', 'captured-image');
+    deleteBtn.setAttribute('class', 'delete-button');
+
+    deleteBtn.textContent = "Delete";
+    capturedImage.src = imageData;
+  
+    // Append
+    capturedImageContainer.appendChild(capturedImage);
+    capturedImageContainer.appendChild(deleteBtn);
+    imgAndVidContainer.appendChild(capturedImageContainer);
+
+    //When delete button is clicked, put the capturd imaged in recycle bin
+    deleteBtn.addEventListener('click', () => {
+        const recycledContainer = document.querySelector('.recycled-images-vids');
+    
+        recycledContainer.appendChild(capturedImageContainer);
+        // capturedImageContainer.remove();
+    })
+}
+```

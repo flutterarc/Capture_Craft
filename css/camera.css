@@ -1,0 +1,112 @@
+
+/* ****************** CAMERA ********************** */
+.camera-container {
+    top: 0;
+    left: 0;
+    position: absolute;
+    height: 60vh;
+    width: 50vw;
+    background-color: whitesmoke;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.video {
+    min-height: 70%;
+    width: 100%;
+    background-color: #2e92d5;
+}
+
+.rec_and_cap_container {
+    min-height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+}
+
+.recordIcon,
+.captureIcon {
+    height: 100%;
+}
+
+#capture,
+#record {
+    height: 60%;
+    width: 5%;
+    border: none;
+    cursor: pointer;
+    appearance: none;
+    background-color: inherit;
+    /* transform-origin: center;  */
+}
+
+/* style of navBar */
+.navBar {
+    min-height: 10%;
+    background-color: slategrey;
+    border: 2px solid black;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.minimize,
+.close {
+    height: 60%;
+    width: 5%;
+    border-radius: 50%;
+}
+
+.minimize {
+    background-color: #2ed573;
+}
+
+.close {
+    background-color: #ff4757;
+}
+
+.recorded-video-container {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+    
+}
+
+.recorded-video {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+.captured-image-container ,.recycledImageContainer{
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.captured-image {
+    width: 200px;
+    height: 200px;
+    border: 1px solid black;
+    margin-bottom: 10px;
+}
+
+
+.delete-button {
+    position: absolute;
+    bottom: 0;
+    left: 0; /* Changed from 50% to 0 */
+    background-color: #ff477e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.delete-button:hover {
+    background-color:darkred;
+}

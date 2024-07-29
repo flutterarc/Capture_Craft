@@ -1,0 +1,53 @@
+
+/* **************** RECYCLE BIN ******************* */
+.recycle-container {
+    position: absolute;
+    height: 70vh;
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.recycle-navBar {
+    /* min-height: 10%;  */
+    background-color: slategrey;
+    border: 2px solid black;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1rem;
+}
+
+.minimize-recycle,
+.close-recycle {
+    height: 60%;
+    width: 5%;
+    border-radius: 50%;
+}
+
+.minimize-recycle {
+    background-color: #2ed573;
+}
+
+.close-recycle {
+    background-color: #ff4757;
+}
+
+.recycled-images-vids {
+    height: 90%;
+    flex-grow: 1;
+    overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+
+    background-color: whitesmoke;
+}
+
+.recycle-text {
+    text-align: center;
+    width: 70%;
+}

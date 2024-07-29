@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    
+
 </body>
 <script>
 
@@ -17,25 +19,26 @@
     //clear() - to erase everything
     //removeItem(key) - delete one item
     //key(index) - get the name of one item
- localStorage.setItem('1','Boss');
-const val = localStorage.getItem("1");
-console.log(val);
+    localStorage.setItem('1', 'Boss');
+    const val = localStorage.getItem("1");
+    console.log(val);
 
-const options = {
-    "name":"Bakugo",
-    "age":"20",
-    "power":['blast','fire']
-};
+    const options = {
+        "name": "Bakugo",
+        "age": "20",
+        "power": ['blast', 'fire']
+    };
 
-const str = JSON.stringify(options)
-localStorage.setItem("hero",str);
+    const str = JSON.stringify(options)
+    localStorage.setItem("hero", str);
 
-const heroData = localStorage.getItem('hero');
-//If we want the string
-console.log(heroData);
+    const heroData = localStorage.getItem('hero');
+    //If we want the string
+    console.log(heroData);
 
-//But if we want the object
-let obj = JSON.parse(heroData);
-console.log(obj);
+    //But if we want the object
+    let obj = JSON.parse(heroData);
+    console.log(obj);
 </script>
+
 </html>
