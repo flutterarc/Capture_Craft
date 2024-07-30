@@ -2,7 +2,7 @@
 
 const cameraBtn = document.querySelector('.camera');
 const recordBtn = document.querySelector('.record');
-
+let isRecording = true;
 cameraBtn.addEventListener('click', cameraUIHandler);
 
 let isCameraOpen = false;
@@ -96,7 +96,6 @@ async function startCamera() {
     const video = document.querySelector('.video');
     const captureBtn = document.querySelector('#capture');
     const recordBtn = document.querySelector('#record');
-
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         video.srcObject = stream;
@@ -104,12 +103,8 @@ async function startCamera() {
 
         captureBtn.addEventListener('click', captureImage);
 
-        // When record button is clicked, start/stop recording
-        let isRecording = false;
-
-
         recordBtn.addEventListener('click', () => {
-            if (!isRecording) {
+            if (isRecording) {
                 startRecording(stream);
             } else {
                 stopRecording(stream);
@@ -159,6 +154,7 @@ function captureImage() {
 
     deleteBtn.addEventListener('click', () => {
         moveMediaToRecycleBin(imageData, capturedImageContainer,'image');
+        completelyDeleteImage(imageData,capturedImageContainer);
     });
 
     //store mediaArray in localStorage
@@ -166,7 +162,7 @@ function captureImage() {
 }
 
 async function startRecording(stream) {
-
+    const recordIcon = document.querySelector('.recordIcon'); 
     try {
         mediaRecorder = new MediaRecorder(stream);
         mediaRecorder.start(1000);
@@ -177,12 +173,16 @@ async function startRecording(stream) {
                 recordedBlobs.push(e.data);
             }
         }
+        recordIcon.src = "../icons/recordStop.png"
     } catch (error) {
         alert('Error starting recording:', error);
     }
 }
 function stopRecording(stream) {
+    const recordIcon = document.querySelector('.recordIcon');
     const imgAndVidContainer = document.querySelector('.img-vid-container');
+
+    recordIcon.src = "../icons/record.png";
 
     if (mediaRecorder) { // Check if mediaRecorder is not null
         mediaRecorder.stop();
@@ -190,6 +190,7 @@ function stopRecording(stream) {
             track.enabled = false; // Disable the track
             track.stop(); // Stop the track
         });
+
         const superBuffer = new Blob(recordedBlobs, { type: 'video/webm' });
 
         const recordedVideoContainer = document.createElement('div');
@@ -206,15 +207,15 @@ function stopRecording(stream) {
         recordedVideo.src = URL.createObjectURL(superBuffer);
         recordedVideo.controls = true; // Add controls to the video
 
-        deleteButton.addEventListener('click', () => {
-            moveMediaToRecycleBin(recordedVideo.src, recordedVideoContainer, 'video');
-            location.reload();
-        });
-
+        
         recordedVideoContainer.appendChild(recordedVideo);
         recordedVideoContainer.appendChild(deleteButton);
         imgAndVidContainer.appendChild(recordedVideoContainer);
-
+        
+        deleteButton.addEventListener('click', () => {
+            moveMediaToRecycleBin(recordedVideo.src, recordedVideoContainer, 'video');
+            recordedVideoContainer.remove();z
+        });
         mediaArray.push({
             src: recordedVideo.src,
             type: 'video',
@@ -222,8 +223,9 @@ function stopRecording(stream) {
         })
 
         mediaRecorder = null;
-        startCamera();
+        recordedBlobs = []; 
         storeMedia();
+        startCamera();
         console.log("inside stop recording")
     }
 }

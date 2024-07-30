@@ -2,7 +2,7 @@
 /* ****************** CAMERA ********************** */
 .camera-container {
     top: 10%;
-    left: 50%;
+    left: 7%;
     position: absolute;
     width: 371px;
     height: 399px;
@@ -28,7 +28,8 @@
 }
 
 .recordIcon,
-.captureIcon {
+.captureIcon
+ {
     height: 100%;
 }
 
@@ -51,13 +52,6 @@
     justify-content: end;
     align-items: center;
     gap: 1rem;
-}
-
-.minimize,
-.close {
-    height: 60%;
-    width: 5%;
-    border-radius: 50%;
 }
 
 .minimize {
@@ -84,19 +78,4 @@
     height: 200px;
     border: 1px solid black;
     margin-bottom: 10px;
-}
-
-
-.delete-button {
-    position: absolute;
-    bottom: 0;
-    left: 0; /* Changed from 50% to 0 */
-    background-color: #ff477e;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-.delete-button:hover {
-    background-color:darkred;
 }
