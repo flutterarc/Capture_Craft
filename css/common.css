@@ -3,25 +3,20 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url('../icons/wallpaper1.jpg.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: overlay;
+    background-color: #121212;
 }
 
 body {
     min-height: 100vh;
     min-width: 100vw;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
-
-.display-time {
-    height: 100px;
-    width: 500px;
-    border: 2px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: wheat;
-    font-size: 5rem;
-}
-
 footer {
     height: calc(100vh - 90vh);
     background-color: lightgoldenrodyellow;
@@ -29,21 +24,70 @@ footer {
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    /* border: 2px solid black; */
+}
+
+/* ************ TIMER ********************** */
+.display-time {
+    height: 200px;
+    width: 600px;
+    border: none;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(24px);
+    font-size: 8rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    animation: glow 2s ease-in-out infinite;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes glow {
+    0% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+    50% { box-shadow: 0 0 60px rgba(255, 255, 255, 0.8); }
+    100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
 }
 
 
-button {
-    transition: transform 0.7s ease-in-out;
+/* ******* BUTTON ************* */
+.camera, .gallery, .recycle-bin {
+    background: linear-gradient(145deg, #ff8a71, #e63946);
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.4s ease, transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3);
 }
-
-button:hover {
-    /* transform: rotate(360deg); */
+.camera:hover,
+.gallery:hover,
+.recycle-bin:hover {
+    background: linear-gradient(145deg, #e63946, #ff8a71);
+    animation: wobble 0.8s ease-in-out;
+    transform: scale(1.1);
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.4);
 }
-
+/* Keyframes for wobble animation */
+@keyframes wobble {
+    0% { transform: rotate(0deg); }
+    15% { transform: rotate(6deg); }
+    30% { transform: rotate(-6deg); }
+    45% { transform: rotate(3deg); }
+    60% { transform: rotate(-3deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+}
 
 /* ******************* COMMON*********************** */
-.img-vid-container,.recycled-images-vids{
+.img-vid-container,
+.recycled-images-vids {
     height: 90%;
     flex-grow: 1;
     overflow: auto;
@@ -57,10 +101,16 @@ button:hover {
     background-color: whitesmoke;
 }
 
+.text {
+    text-align: center;
+    width: 70%;
+    font-size: 1.8rem;
+}
 
-/* ********** WALLPAPER ************ */
-main {
-    background-image: url('../icons/wallpaper1.jpg.jpeg');
-    background-size: cover;
-    background-position: center;
+.minimize,
+.close-gallery,
+.minimize-recycle,
+.close-recycle,
+.close {
+    cursor: pointer;
 }

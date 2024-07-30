@@ -24,14 +24,15 @@ function recycleBinUI() {
 let isRecycleMinimized = false;
 recycleMinimize.addEventListener("click", function () {
     if (isRecycleMinimized == false) {
-        recycledContainer.style.visibility = "none";
+        recycledContainer.style.display = "none";
         recycledContainer.style.backgroundColor = "inherit";
     } else {
-        recycledContainer.style.visibility = "flex";
+        recycledContainer.style.display = "flex";
         recycledContainer.style.backgroundColor = "whitesmoke";
     }
     isRecycleMinimized = !isRecycleMinimized;
 });
+
 recycleClose.addEventListener("click", function () {
     recycleBinContainer.style.display = 'none';
 })

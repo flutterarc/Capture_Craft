@@ -1,21 +1,21 @@
 
 /* ****************** CAMERA ********************** */
 .camera-container {
-    top: 0;
-    left: 0;
+    top: 10%;
+    left: 50%;
     position: absolute;
-    height: 60vh;
-    width: 50vw;
-    background-color: whitesmoke;
+    width: 371px;
+    height: 399px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background-color: whitesmoke;
+    border-radius: 10px;
 }
 
 .video {
     min-height: 70%;
     width: 100%;
-    background-color: #2e92d5;
 }
 
 .rec_and_cap_container {
@@ -24,6 +24,7 @@
     justify-content: center;
     align-items: center;
     gap: 4rem;
+    background-color:slategrey;
 }
 
 .recordIcon,
@@ -39,7 +40,6 @@
     cursor: pointer;
     appearance: none;
     background-color: inherit;
-    /* transform-origin: center;  */
 }
 
 /* style of navBar */
@@ -68,12 +68,7 @@
     background-color: #ff4757;
 }
 
-.recorded-video-container {
-    position: relative;
-    display: inline-block;
-    margin: 10px;
-    
-}
+
 
 .recorded-video {
     width: 200px;
@@ -82,12 +77,7 @@
     margin-bottom: 10px;
 }
 
-.captured-image-container ,.recycledImageContainer{
-    display: inline-block;
-    margin: 10px;
-    text-align: center;
-    position: relative;
-}
+
 
 .captured-image {
     width: 200px;
