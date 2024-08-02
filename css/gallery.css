@@ -20,7 +20,7 @@
 }
 
 /* Gallery mea jo images aaur video ka ratai wo sabsea bara wala container, aaur recycle bin mea jaha mea delteed images,video ko raktai, wo sabsea bara wala ccontainer ka stylnig */
-.img-vid-container,.recycled-images-vids {
+.img-vid-container {
     flex-grow: 1;
     overflow: auto;
     padding: 10px;
@@ -54,13 +54,7 @@
 .recorded-video-container video , .recycledMediaContainer video{
     aspect-ratio: 1 / 1; /*video has default height,width ratio so thats, to matintain the same we have to give this */
 }
-.minimize-gallery {
-    background-color: #2ed573;
-}
 
-.close-gallery {
-    background-color: #ff4757;
-}
 
 .recorded-video-container {
     position: relative;

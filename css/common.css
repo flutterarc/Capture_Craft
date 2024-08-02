@@ -118,8 +118,32 @@ footer {
     cursor: pointer;
 }
 
+.minimize-recycle,.minimize-gallery,.minimize {
+    background-color: #2ed573;
+}
+
+.close-gallery, .close-recycle, .close {
+    background-color: #ff4757;
+} 
+
+
 /*  GALLERY UI KA AGAR KOI DUSRA UI SEA COMMON HOGA TOH YAHA DAL DOH */
 
 .minimize:hover,.close:hover,.minimize-recycle:hover, .gallery-navBar .close-gallery:hover,.close-recycle:hover {
     border: 2px solid black;
+}
+
+
+/* Default z-index for all containers */
+.camera-container,.gallery-container,
+.recycle-container {
+    /* position: relative; */
+    z-index: 1;
+    transition: z-index 0.2s ease; /* Optional: smooth transition */
+}
+
+/* Increase z-index on hover */
+.camera-container:hover,.gallery-container:hover,
+.recycle-container:hover {
+    z-index: 10; /* or any higher value */
 }

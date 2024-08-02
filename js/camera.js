@@ -2,7 +2,7 @@
 
 const cameraBtn = document.querySelector('.camera');
 const recordBtn = document.querySelector('.record');
-let isRecording = true;
+let isRecording = false;
 cameraBtn.addEventListener('click', cameraUIHandler);
 
 let isCameraOpen = false;
@@ -34,7 +34,7 @@ function cameraUIHandler() {
     const rec_and_cap_container = document.createElement('div');
     const cameraText = document.createElement('h2');
 
-    cameraText.setAttribute('class','text');
+    cameraText.setAttribute('class', 'text');
     cameraContainer.setAttribute('class', 'camera-container');
     cameraNavBar.setAttribute('class', 'navBar');
     minimize.setAttribute('class', 'minimize');
@@ -104,16 +104,27 @@ async function startCamera() {
         captureBtn.addEventListener('click', captureImage);
 
         recordBtn.addEventListener('click', () => {
-            if (isRecording) {
+            if (!isRecording) {
                 startRecording(stream);
+                console.log("isRecording:", isRecording);
             } else {
                 stopRecording(stream);
+                console.log("isRecording STOP RECORDING:", isRecording);
             }
             isRecording = !isRecording;
         });
 
+        console.log("isRecording OUTSIDE:", isRecording);
+        // recordBtn.addEventListener('click', async () => {
+        //     if (isRecording) {
+        //         await startRecording(stream);
+        //     } else {
+        //         stopRecording(stream);
+        //     }
+        //     isRecording = !isRecording;
+        // });
+
     } catch (error) {
-        console.error('Error accessing camera:', error);
         alert('Error accessing camera. Please make sure your camera is plugged in and available.');
     }
 }
@@ -153,8 +164,8 @@ function captureImage() {
     });
 
     deleteBtn.addEventListener('click', () => {
-        moveMediaToRecycleBin(imageData, capturedImageContainer,'image');
-        completelyDeleteImage(imageData,capturedImageContainer);
+        moveMediaToRecycleBin(imageData, capturedImageContainer, 'image');
+        completelyDeleteImage(imageData, capturedImageContainer);
     });
 
     //store mediaArray in localStorage
@@ -173,9 +184,12 @@ async function startRecording(stream) {
                 recordedBlobs.push(e.data);
             }
         }
+        console.log("STARTING TO RECORD");
+
         recordIcon.src = "../icons/recordStop.png"
     } catch (error) {
-        alert('Error starting recording:', error);
+        console.log("THERE IS AN ERROR:", error);
+        // alert('Error starting recording:', error);
     }
 }
 function stopRecording(stream) {
@@ -190,7 +204,6 @@ function stopRecording(stream) {
             track.enabled = false; // Disable the track
             track.stop(); // Stop the track
         });
-
         const superBuffer = new Blob(recordedBlobs, { type: 'video/webm' });
 
         const recordedVideoContainer = document.createElement('div');
@@ -207,14 +220,13 @@ function stopRecording(stream) {
         recordedVideo.src = URL.createObjectURL(superBuffer);
         recordedVideo.controls = true; // Add controls to the video
 
-        
         recordedVideoContainer.appendChild(recordedVideo);
         recordedVideoContainer.appendChild(deleteButton);
         imgAndVidContainer.appendChild(recordedVideoContainer);
-        
+
         deleteButton.addEventListener('click', () => {
             moveMediaToRecycleBin(recordedVideo.src, recordedVideoContainer, 'video');
-            recordedVideoContainer.remove();z
+            recordedVideoContainer.remove();
         });
         mediaArray.push({
             src: recordedVideo.src,
@@ -223,15 +235,13 @@ function stopRecording(stream) {
         })
 
         mediaRecorder = null;
-        recordedBlobs = []; 
+        recordedBlobs = [];
         storeMedia();
         startCamera();
-        console.log("inside stop recording")
+        console.log("Recording stopped")
     }
 }
-
 function moveMediaToRecycleBin(src, mediaContainer, type) {
-    console.log("Inside recycle")
     const recycledContainer = document.querySelector('.recycled-images-vids');
     const recycledMediaContainer = document.createElement('div');
     let recycledMedia;
@@ -241,7 +251,6 @@ function moveMediaToRecycleBin(src, mediaContainer, type) {
     mediaContainer.innerHTML = '';
 
     if (type === 'image') {
-        console.log("inside here")
         recycledMedia = document.createElement('img');
         recycledMedia.setAttribute('class', 'recycled-img');
         recycledMedia.src = src;
