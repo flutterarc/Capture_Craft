@@ -106,23 +106,12 @@ async function startCamera() {
         recordBtn.addEventListener('click', () => {
             if (!isRecording) {
                 startRecording(stream);
-                console.log("isRecording:", isRecording);
             } else {
                 stopRecording(stream);
-                console.log("isRecording STOP RECORDING:", isRecording);
             }
             isRecording = !isRecording;
         });
 
-        console.log("isRecording OUTSIDE:", isRecording);
-        // recordBtn.addEventListener('click', async () => {
-        //     if (isRecording) {
-        //         await startRecording(stream);
-        //     } else {
-        //         stopRecording(stream);
-        //     }
-        //     isRecording = !isRecording;
-        // });
 
     } catch (error) {
         alert('Error accessing camera. Please make sure your camera is plugged in and available.');
@@ -188,8 +177,7 @@ async function startRecording(stream) {
 
         recordIcon.src = "../icons/recordStop.png"
     } catch (error) {
-        console.log("THERE IS AN ERROR:", error);
-        // alert('Error starting recording:', error);
+        alert('Error starting recording:', error);
     }
 }
 function stopRecording(stream) {
@@ -223,7 +211,6 @@ function stopRecording(stream) {
         recordedVideoContainer.appendChild(recordedVideo);
         recordedVideoContainer.appendChild(deleteButton);
         imgAndVidContainer.appendChild(recordedVideoContainer);
-
         deleteButton.addEventListener('click', () => {
             moveMediaToRecycleBin(recordedVideo.src, recordedVideoContainer, 'video');
             recordedVideoContainer.remove();
@@ -237,8 +224,8 @@ function stopRecording(stream) {
         mediaRecorder = null;
         recordedBlobs = [];
         storeMedia();
-        startCamera();
         console.log("Recording stopped")
+        startCamera();
     }
 }
 function moveMediaToRecycleBin(src, mediaContainer, type) {

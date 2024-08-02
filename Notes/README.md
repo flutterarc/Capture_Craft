@@ -1,1 +1,1 @@
-# Capture_Craft
+# User can record or capture himself, and store it in gallery, If deleted will go to recycle bin, if want to resotre can also do that.

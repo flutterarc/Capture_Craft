@@ -1,7 +1,7 @@
 # About
 
 * Highlevel  - 
-    * users can record itself, click images,
+    * users can record himself, click images,
     * gallery app, when image is downloaded goes into gallery
     * when image is deleted goes into recycle bin.
     * When image is deleted even from recycle bin, deleted forever.
@@ -16,15 +16,15 @@
 
 * INDEX
 * To find the coordinates on screen
-  * clientX -> from the visible area, how much pixels away am i from , from that point where I clicked, (left most side sea nhi toh top sea measyre krta hea)
+  * clientX -> from the visible area, how much pixels away am i from , from that point where I clicked, (left most side sea nhi toh top sea measure krta hea)
   * pageX -> this measures from the beginning of the page(left most side or top)
   * screenX -> measures from the whole screen, even if you decrease the container size
-    * offsetX -> yea joh container ka hisab sea dkta hea.. substracting the space in between.
+  * offsetX -> yea joh container ka hisab sea dkta hea.. substracting the space in between.
 
 
 ## Container when click come to top wala code
 * 1.set a default z-index value
-* 2.Higher the z-index value, that code will come to top
+* 2.Higher the z-index value, that container will come to top
 
 
 ## RECORDING USER
@@ -54,8 +54,3 @@ function startRecording(stream) {
 ## Storage
 * 1.Local storage size limit: local storage has a maximum size limit of 5MB. If you try to store too many images, you may exceed this limit and the images may not be stored correctly.
 * 2.Security: Local storage is not secure, so you should not store sensitive information (like user data or authentication tokens) in local storage.
-
-
-## BUGS ENCOUNTER
- * When for the first time we click, the record button, we can do the recording and after stopping the record, if we click again the record button, it first give the alert error then after we press ok then only it starts recording.
-    * => 

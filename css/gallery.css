@@ -19,7 +19,6 @@
     gap: 1rem;
 }
 
-/* Gallery mea jo images aaur video ka ratai wo sabsea bara wala container, aaur recycle bin mea jaha mea delteed images,video ko raktai, wo sabsea bara wala ccontainer ka stylnig */
 .img-vid-container {
     flex-grow: 1;
     overflow: auto;
@@ -34,7 +33,6 @@
     background-color: whitesmoke
 }
 
-/* Recorded vid and captured image ka container , jiska ander butons log hea ,, SO Recycle bin ka b dal diya yaha mea*/
 .recorded-video-container, .captured-image-container ,.recycledMediaContainer {
     margin: 10px;
     max-width: 200px;
@@ -43,7 +41,6 @@
     position: relative;
 }
 
-/* Recorded video and image ka ander wala video andimage respectively, recycle bin ka b dal diya */
 .recorded-video-container video, .captured-image-container img ,.recycledMediaContainer img, .recycledMediaContainer video{
     width: 100%;
     height: 100%;

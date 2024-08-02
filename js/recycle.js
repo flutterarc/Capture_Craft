@@ -23,6 +23,7 @@ function recycleBinUI() {
 }
 let isRecycleMinimized = false;
 recycleMinimize.addEventListener("click", function () {
+    console.log(isRecycleMinimized);
     if (isRecycleMinimized == false) {
         recycledContainer.style.display = "none";
         recycledContainer.style.backgroundColor = "inherit";
